@@ -1,4 +1,12 @@
-const { override, fixBabelImports, addLessLoader } = require("customize-cra")
+const {
+  addWebpackPlugin,
+  adjustStyleLoaders,
+  override,
+  fixBabelImports,
+  addLessLoader
+} = require("customize-cra")
+const AntdThemePlugin = require("antd-theme/plugin")
+
 
 // overrider CRA webpack config
 module.exports = override(
@@ -8,7 +16,27 @@ module.exports = override(
     style: true,
   }),
   addLessLoader({
-    javascriptEnabled: true,
-    modifyVars: { "@primary-color": "#90cdf4" }, // update ANT UI theme here
+    javascriptEnabled: true
   }),
+  adjustStyleLoaders(
+    (loaders) => {
+      loaders.use[0] = {
+        loader: AntdThemePlugin.loader
+      }
+    }
+  ),
+  addWebpackPlugin(
+    new AntdThemePlugin({
+      themes: [
+        {
+          name: 'default',
+          filename: require.resolve('antd/lib/style/themes/default.less'),
+        },
+        {
+          name: 'dark',
+          filename: require.resolve('antd/lib/style/themes/dark.less'),
+        },
+      ],
+    })
+  )
 )

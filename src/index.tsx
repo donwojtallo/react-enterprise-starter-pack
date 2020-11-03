@@ -7,9 +7,22 @@ import { I18nProvider } from "@lingui/react"
 import { Spin } from "antd"
 import RootStore, { stores } from "./stores/RootStore"
 import "mobx-react/batchingForReactDom"
+import { ThemeProvider } from "antd-theme"
 
 // Lazy loading main pages
 const Home = lazy(() => import("./pages/Home/index"))
+
+const initialTheme = {
+  name: "default",
+}
+
+const ThemeWrapper: React.FC = () => {
+  return (
+    <ThemeProvider theme={initialTheme}>
+      <App />
+    </ThemeProvider>
+  )
+}
 
 const I18nWrapper: React.FC = () => {
   const { localeStore } = useContext(RootStore)
@@ -45,7 +58,7 @@ const App: React.FC = () => {
 
 ReactDOM.render(
   <RootStore.Provider value={stores}>
-    <I18nWrapper />
+    <ThemeWrapper />
   </RootStore.Provider>,
   document.getElementById("root"),
 )

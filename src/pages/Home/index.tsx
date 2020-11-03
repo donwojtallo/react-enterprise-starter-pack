@@ -4,6 +4,7 @@ import { Button, Skeleton, Spin } from "antd"
 import styled from "styled-components"
 import { observer } from "mobx-react"
 import RootStore from "../../stores/RootStore"
+import { useTheme } from "antd-theme"
 
 // Overriding ant ui button style
 const StyledButton = styled(Button)`
@@ -12,6 +13,8 @@ const StyledButton = styled(Button)`
 
 const Home: React.FC = () => {
   const { tasksStore } = useContext(RootStore)
+  const [all] = useTheme()
+  console.log(all)
 
   if (!tasksStore.tasks) {
     tasksStore.fetchTasks()
